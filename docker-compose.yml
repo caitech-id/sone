@@ -5,8 +5,13 @@ services:
   redis:
     image: redis
     container_name: "redis-sone"
+    command: redis-server /usr/local/etc/redis/redis.conf --requrepass sone
+    ports:
+      - "6301:6379"
+    volumes:
+      -  $PWD/redis.conf:usr/local/etc/redis/redis.conf
     networks:
-    - sonenetwork
+      - sonenetwork
   db:
     image: postgres:12.11
     container_name: "pg95-sone"
@@ -36,5 +41,6 @@ services:
     - REDIS_HOST= redis
  
 volumes:
-  # web_data12:
+  # web_data:
+  # redis_data:
   db_data12:
