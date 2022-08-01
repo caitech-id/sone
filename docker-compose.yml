@@ -8,6 +8,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf --requrepass sone
     ports:
       - "6301:6379"
+    restart: always
     volumes:
       -  ./redis:/usr/local/etc/redis/redis.conf
     networks:
@@ -34,6 +35,7 @@ services:
     - ./templates:/etc/nginx/templates
     ports:
     - "8001:80"
+    restart: always
     networks:
       - sonenetwork
     environment:
