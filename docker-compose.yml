@@ -1,0 +1,40 @@
+version: '2'
+networks:
+  sonenetwork:
+services:
+  redis:
+    image: redis
+    container_name: "redis-sone"
+    networks:
+    - sonenetwork
+  db:
+    image: postgres:12.11
+    container_name: "pg95-sone"
+    networks:
+      - sonenetwork
+    environment:
+      - POSTGRES_DB=sone
+      - POSTGRES_PASSWORD=sone
+      - POSTGRES_USER=sone
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+    - "5401:5432"
+    restart: always
+    volumes:
+      - db_data12:/var/lib/postgresql/data/pgdata
+  web:
+    image: nginx
+    container_name: "nginx-sone"
+    volumes:
+    - ./templates:/etc/nginx/templates
+    ports:
+    - "8001:80"
+    networks:
+      - sonenetwork
+    environment:
+    - DB_HOST= db
+    - REDIS_HOST= redis
+ 
+volumes:
+  # web_data12:
+  db_data12:
